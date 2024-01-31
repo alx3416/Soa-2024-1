@@ -6,3 +6,6 @@ def myfunction(a):
     
 def myfunction2(a):
     return a+7
+    
+def myfunction3(a):
+    return a+3
