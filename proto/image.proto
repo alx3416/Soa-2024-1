@@ -4,14 +4,40 @@ package pb;
 
 enum compression {
   UNKNOWN            = 0;
+  UNCOMPRESSED       = 1;
+  JPG                = 2;
+  LZ4                = 3;
+  PNG                = 4;
+}
+
+enum colorspace {
+  UNDEFINED          = 0;
+  RGB                = 1;
+  CMY                = 2;
+  HSV                = 3;
+  LAB                = 4;
+  GRAY               = 5;
+}
+
+message facelocation
+{
+  int32 xmin = 1;
+  int32 ymin = 2;
+  int32 xmax = 3;
+  int32 ymax = 4;
 }
 
 message imagen
 {
   int32 width                  = 1;
   int32 height                 = 2;
-  bytes data                   = 3;
-  compression imagecompression = 4;
+  int32 channels               = 3;
+  bytes data                   = 4;
+  bytes metadata               = 5;
+  repeated facelocation facedetection   = 6;
+  string name                  = 7;
+  compression imagecompression = 8;
+  colorspace color             = 9;
 
 
 }

@@ -4,9 +4,9 @@ import ecal.core.core as ecal_core
 
 # Initialize eCAL input interface
 
-cam = cv.VideoCapture(1)
+cam = cv.VideoCapture(0)
 
-while ecal_core.ok():
+while True:
     # OpenCV related
     ret_val, img = cam.read()
 
