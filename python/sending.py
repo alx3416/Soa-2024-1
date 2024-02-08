@@ -1,8 +1,14 @@
 import sys
 import time
+import os
+
 
 import ecal.core.core as ecal_core
 from ecal.core.publisher import ProtoPublisher
+
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+
 import proto.mi_mensaje_pb2 as mi_mensaje_pb2
 
 ecal_core.initialize(sys.argv, "Python Protobuf Publisher")
