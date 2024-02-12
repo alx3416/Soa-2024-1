@@ -8,9 +8,9 @@ import proto.image_pb2 as image_pb2
 # Initialize eCAL input interface
 ecal_core.initialize(sys.argv, "Python Protobuf Publisher")
 
-pub = ProtoPublisher("mensaje imagen",
-                     image_pb2.imagen)
-protobuf_message = image_pb2.imagen()
+pub = ProtoPublisher("image",
+                     image_pb2.image)
+protobuf_message = image_pb2.image()
 
 
 cam = cv.VideoCapture(0)

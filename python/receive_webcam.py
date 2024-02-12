@@ -6,8 +6,8 @@ from ecal.core.subscriber import ProtoSubscriber
 import proto.image_pb2 as imagen_pb2
 
 ecal_core.initialize(sys.argv, "Python Protobuf Subscriber")
-sub = ProtoSubscriber("mensaje imagen", imagen_pb2.imagen)
-protobuf_message = imagen_pb2.imagen()
+sub = ProtoSubscriber("image", imagen_pb2.image)
+protobuf_message = imagen_pb2.image()
 
 while ecal_core.ok():
     is_received, protobuf_message, time = sub.receive(1)
