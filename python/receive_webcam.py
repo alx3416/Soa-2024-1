@@ -13,7 +13,11 @@ while ecal_core.ok():
     is_received, protobuf_message, time = sub.receive(1)
     if is_received:
         img = np.frombuffer(protobuf_message.data, dtype=np.uint8)
-        img = np.reshape(img, (protobuf_message.height, protobuf_message.width, 3))
+        # uncompressed
+        # img = np.reshape(img, (protobuf_message.height, protobuf_message.width, protobuf_message.channels))
+
+        # jpg
+        img = cv.imdecode(img, cv.IMREAD_COLOR)
 
         cv.imshow('my webcam', img)
         if cv.waitKey(1) == 27:

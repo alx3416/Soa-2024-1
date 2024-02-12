@@ -23,11 +23,14 @@ while True:
     rows, cols, channels = img.shape
     protobuf_message.width = cols
     protobuf_message.height = rows
-    # protobuf_message.channels = channels
+    protobuf_message.channels = channels
+    protobuf_message.color = image_pb2.RGB
+    protobuf_message.imagecompression = image_pb2.JPG
+    protobuf_message.name = "logitech"
     # send image uncompressed
-    protobuf_message.data = img.tobytes()
-    # _, img_jpg = cv.imencode('.jpg', img)
-    # protobuf_message.data = img_jpg.tobytes()
+    # protobuf_message.data = img.tobytes()
+    _, img_jpg = cv.imencode('.jpg', img)
+    protobuf_message.data = img_jpg.tobytes()
 
     if ret_val:
         cv.imshow('my webcam', img)
