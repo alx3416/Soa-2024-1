@@ -52,3 +52,9 @@ class ImageOutput(OutputInterface):
         self.updateImageProperties(image.shape)
         self.message.data = improc.encodeImage(image, compression)
 
+    def updateFaceDetected(self, faces):
+
+        for (x, y, w, h) in faces:
+            self.message.facedetection.add().xmin = x
+            print(self.message.facedetection[0].xmin)
+
