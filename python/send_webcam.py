@@ -6,8 +6,8 @@ publisher = ecalio.ImageOutput("image")
 
 # cascade detector
 faceDetector = cv.CascadeClassifier("haarcascade_frontalface_default.xml")
-
-cam = cv.VideoCapture(1)
+# 0 default, 1 USB webcam
+cam = cv.VideoCapture(0)
 
 while True:
     # OpenCV related
