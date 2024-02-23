@@ -17,7 +17,7 @@ class OutputInterface:
 
     @staticmethod
     def getProto(topicName):
-        Proto = importlib.import_module("proto." + topicName + "_pb2")
+        Proto = importlib.import_module(topicName + "_pb2")
         return eval("Proto." + topicName)
 
     def startPublisher(self, topicName):
