@@ -1,34 +1,49 @@
+import sys
+
 import cv2 as cv
-import ecal_interfaces as ecalio
+import ecal.core.core as ecal_core
+from ecal.core.publisher import ProtoPublisher
+import proto.image_pb2 as image_pb2
 
-# Initialize eCAL input interface
-publisher = ecalio.ImageOutput("image")
+ecal_core.initialize(sys.argv, "Python Protobuf Publisher")
 
-# cascade detector
-faceDetector = cv.CascadeClassifier("haarcascade_frontalface_default.xml")
-# 0 default, 1 USB webcam
+publisher = ProtoPublisher("image", image_pb2.imagen)
+
+#base xd xml
+face_cascade = cv.CascadeClassifier(cv.data.haarcascades + 'haarcascade_frontalface_default.xml')
+
 cam = cv.VideoCapture(0)
 
 while True:
-    # OpenCV related
     ret_val, img = cam.read()
 
-    # face detection
-    img_gray = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
-    faces = faceDetector.detectMultiScale(img_gray, 1.1, 4)
-    publisher.updateFaceDetected(faces)
-    for (x, y, w, h) in faces:
-        cv.rectangle(img, (x, y), (x + w, y + h), (255, 0, 0), 2)
+    #-----conversion y deteccion xd-----
+    gray = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
+    faces = face_cascade.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=6)
+    #-----------------------------------
 
-    # update message and image processing functions
-    publisher.updateMessage(img, "JPG")
+    protobuf_message = image_pb2.imagen()
+    cv.imshow('ENVIO_XD', img)
 
-    # send image
-    publisher.send()
+    # guardado de rostros
+    facelocation_message = image_pb2.faceloation()
+    for face in faces:
+        facelocation_message = protobuf_message.facedetection.add()
+        facelocation_message.xmin = int(face[0])
+        facelocation_message.ymin = int(face[1])
+        facelocation_message.xmax = int(face[0] + face[2])
+        facelocation_message.ymax = int(face[1] + face[3])
 
-    if ret_val:
-        cv.imshow('my webcam', img)
-        if cv.waitKey(1) == 27:
-            break  # esc to quit
+    #imagen
+    protobuf_message.width = img.shape[1]
+    protobuf_message.height = img.shape[0]
+    protobuf_message.channels = img.shape[2]
+    protobuf_message.data = cv.imencode(".jpg", img)[1].tobytes()
 
+    publisher.send(protobuf_message)
+
+    if cv.waitKey(1) == 27:
+        break
+
+cam.release()
 cv.destroyAllWindows()

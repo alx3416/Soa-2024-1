@@ -1,8 +1,10 @@
 import sys
 import importlib
+import cv2
 import ecal.core.core as ecal_core
 from ecal.core.publisher import ProtoPublisher
 from ecal.core.subscriber import ProtoSubscriber
+import numpy as np
 import image_processing as improc
 
 
@@ -64,3 +66,59 @@ class ImageOutput(OutputInterface):
             face = face + 1
             # print(self.message.facedetection[0].xmin)
 
+class InputInterface:
+    def __init__(self, topicName):
+        self.topicName = topicName
+        self.processName = "Python_webcam_receive"
+        self.start()
+        self.subscriber = self.startSubscriber(self.topicName)
+
+    @staticmethod
+    def getProto(topicName):
+        Proto = importlib.import_module("proto." + topicName + "_pb2")
+        return eval("Proto." + topicName)
+
+    def startSubscriber(self, topicName):
+        ProtoPb = self.getProto(topicName)
+        return ProtoSubscriber(topicName, ProtoPb)
+
+    def start(self):
+        ecal_core.initialize(sys.argv, self.processName)
+        ecal_core.set_process_state(1, 1, "")
+
+    def __del__(self):
+        self.subscriber.c_subscriber.destroy()
+        return
+
+class ImageInput(InputInterface):
+    def __init__(self, topicName):
+        InputInterface.__init__(self, topicName)
+        return
+
+    def receive(self):
+        is_received, self.protobuf_message, time = self.subscriber.receive(1)
+        if is_received:
+            return True
+        return False
+
+    def receive_data(self):
+        if self.receive():
+            img = np.frombuffer(self.protobuf_message.data, dtype=np.uint8)
+            #img = np.reshape(img, (protobuf_message.height, protobuf_message.width, protobuf_message.channels))
+            img = cv2.imdecode(img, cv2.IMREAD_COLOR)
+            return img
+        return None
+
+    def getImageProperties(self):
+        if self.receive():
+            return (
+                self.protobuf_message.width,
+                self.protobuf_message.height,
+                self.protobuf_message.channels
+            )
+        return None
+
+    def getFaceDetection(self):
+        if self.receive():
+            return self.protobuf_message.facedetection, 
+        return None
