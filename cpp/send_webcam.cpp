@@ -6,6 +6,19 @@
 
 
 int main(int argc, char *argv[]) {
+
+    // Subscribers names
+    const char *topic_mi_mensaje = "webcam_data";
+
+    // Creating Process
+    eCAL::Initialize(argc, argv, "C++ webcam Publisher");
+    eCAL::Process::SetState(proc_sev_healthy, proc_sev_level1, " ");
+    // Creating subscribers and its message
+    eCAL::protobuf::CPublisher<pb::webcam> pub_mensaje(topic_mi_mensaje);
+    pb::webcam protobuf_message;
+
+    eCAL::Process::SleepMS(1000);
+
     cv::Mat frame, frame_gray;
     cv::VideoCapture cap;
 
@@ -25,6 +38,25 @@ int main(int argc, char *argv[]) {
         }
 
         cv::imshow("Live", frame);
+
+        // Updating protobuf message
+        cv::uint8_t image[640 * 480 * 3];
+        int idx = 0;
+        for(int col=0; col<frame.cols; col++){
+            for(int row=0; row<frame.rows; row++){
+                image[idx++] = frame.at<cv::Vec3b>(row,col)[0];
+                image[idx++] = frame.at<cv::Vec3b>(row,col)[1];
+                image[idx++] = frame.at<cv::Vec3b>(row,col)[2];
+            }
+        }
+
+        protobuf_message.mutable_image()->set_height(frame.cols);
+        protobuf_message.mutable_image()->set_width(frame.rows);
+        protobuf_message.mutable_image()->set_imagecompression(pb::UNCOMPRESSED);
+        protobuf_message.mutable_image()->set_imageformat(pb::RGB);
+        protobuf_message.mutable_image()->set_data(&image, frame.rows * frame.cols * 3);
+        pub_mensaje.Send(protobuf_message);
+        eCAL::Process::SleepMS(5);
 
         if (cv::waitKey(5) >= 0)
             break;
