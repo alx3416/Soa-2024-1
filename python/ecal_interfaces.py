@@ -17,7 +17,7 @@ class OutputInterface:
 
     @staticmethod
     def getProto(topicName):
-        Proto = importlib.import_module("proto." + topicName + "_pb2")
+        Proto = importlib.import_module(topicName + "_pb2")
         return eval("Proto." + topicName)
 
     def startPublisher(self, topicName):
@@ -51,4 +51,16 @@ class ImageOutput(OutputInterface):
     def updateMessage(self, image, compression):
         self.updateImageProperties(image.shape)
         self.message.data = improc.encodeImage(image, compression)
+
+    def updateFaceDetected(self, faces):
+        del self.message.facedetection[:]
+        face = 0
+        for (x, y, w, h) in faces:
+            self.message.facedetection.add()
+            self.message.facedetection[face].xmin = x
+            self.message.facedetection[face].ymin = y
+            self.message.facedetection[face].xmax = x + w
+            self.message.facedetection[face].ymax = y + h
+            face = face + 1
+            # print(self.message.facedetection[0].xmin)
 
