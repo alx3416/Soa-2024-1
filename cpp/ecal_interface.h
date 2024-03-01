@@ -67,7 +67,7 @@ namespace eCALIO{
         ImageOutput()
                 : OutputInterface("image") {}
 
-        void updateMessage(const cv::Mat image, pb::compression compression, pb::colorspace color) {
+        void updateMessage(cv::Mat const &image, pb::compression compression, pb::colorspace color) {
 
             cv::uint8_t vectorizedImage[640 * 480 * 3];
             int idx = 0;
@@ -80,8 +80,8 @@ namespace eCALIO{
             }
             message.set_height(image.cols);
             message.set_width(image.rows);
-            message.set_imagecompression(pb::UNCOMPRESSED);
-            message.set_color(pb::RGB);
+            message.set_imagecompression(compression);
+            message.set_color(color);
             message.set_data(&vectorizedImage, image.rows * image.cols * 3);
         }
     };
