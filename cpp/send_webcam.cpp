@@ -3,6 +3,9 @@
 #include <opencv2/highgui.hpp>
 #include "opencv2/imgproc/imgproc.hpp"
 #include <iostream>
+#include <ecal/ecal.h>
+#include <ecal/msg/protobuf/publisher.h>
+#include "image.pb.h"
 
 
 int main(int argc, char *argv[]) {
@@ -14,8 +17,8 @@ int main(int argc, char *argv[]) {
     eCAL::Initialize(argc, argv, "C++ webcam Publisher");
     eCAL::Process::SetState(proc_sev_healthy, proc_sev_level1, " ");
     // Creating subscribers and its message
-    eCAL::protobuf::CPublisher<pb::webcam> pub_mensaje(topic_mi_mensaje);
-    pb::webcam protobuf_message;
+    eCAL::protobuf::CPublisher<pb::image> pub_mensaje(topic_mi_mensaje);
+    pb::image protobuf_message;
 
     eCAL::Process::SleepMS(1000);
 
@@ -50,11 +53,11 @@ int main(int argc, char *argv[]) {
             }
         }
 
-        protobuf_message.mutable_image()->set_height(frame.cols);
-        protobuf_message.mutable_image()->set_width(frame.rows);
-        protobuf_message.mutable_image()->set_imagecompression(pb::UNCOMPRESSED);
-        protobuf_message.mutable_image()->set_imageformat(pb::RGB);
-        protobuf_message.mutable_image()->set_data(&image, frame.rows * frame.cols * 3);
+        protobuf_message.set_height(frame.cols);
+        protobuf_message.set_width(frame.rows);
+        protobuf_message.set_imagecompression(pb::UNCOMPRESSED);
+        protobuf_message.set_color(pb::RGB);
+        protobuf_message.set_data(&image, frame.rows * frame.cols * 3);
         pub_mensaje.Send(protobuf_message);
         eCAL::Process::SleepMS(5);
 
