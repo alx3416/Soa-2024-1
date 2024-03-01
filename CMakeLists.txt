@@ -22,6 +22,7 @@ set(ecal_snd
 
 set(ecal_cam_snd
         ${CMAKE_CURRENT_SOURCE_DIR}/cpp/send_webcam.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/cpp/ecal_interface.h
 )
 
 set(protobuf_files
