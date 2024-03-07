@@ -3,6 +3,7 @@
 
 #include <ecal/ecal.h>
 #include <ecal/msg/protobuf/publisher.h>
+#include <ecal/msg/protobuf/subscriber.h>
 #include <iostream>
 #include <string>
 #include "image.pb.h"
@@ -12,6 +13,44 @@
 #include "opencv2/imgproc/imgproc.hpp"
 
 namespace eCALIO{
+    template<typename T_topic>
+    class InputInterface {
+    private:
+        const char* processName;
+        const char* topicName;
+        eCAL::protobuf::CSubscriber<T_topic> subscriber;
+
+        void startProcess() {
+            eCAL::Initialize(0, nullptr, processName);
+            eCAL::Process::SetState(proc_sev_healthy, proc_sev_level1, " ");
+        }
+
+        void createSubscriber() {
+            subscriber.Create(getTopicName());
+        }
+
+    public:
+        T_topic message;
+
+        explicit InputInterface(const char* topic = "ecal_input")
+                : topicName{topic} {
+            processName = "C++ Subscriber";
+            startProcess();
+            createSubscriber();
+        }
+
+        bool receiveMessage() {
+            return subscriber.Receive(message);
+        }
+
+        std::string getProcessName() const {
+            return processName;
+        }
+
+        std::string getTopicName() const {
+            return topicName;
+        }
+    };
     template<typename T_topic>
     class OutputInterface {
     private:
