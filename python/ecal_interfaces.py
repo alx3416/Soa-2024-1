@@ -3,6 +3,7 @@ import importlib
 import ecal.core.core as ecal_core
 from ecal.core.publisher import ProtoPublisher
 from ecal.core.subscriber import ProtoSubscriber
+import image_processing as improc
 
 
 class OutputInterface:
@@ -14,9 +15,10 @@ class OutputInterface:
         self.publisher = None
         self.message = self.startPublisher(self.messageName)()
 
-    def getProto(self):
-        Proto = importlib.import_module("proto." + self.messageName + "_pb2")
-        return eval("Proto." + self.messageName)
+    @staticmethod
+    def getProto(topicName):
+        Proto = importlib.import_module("proto." + topicName + "_pb2")
+        return eval("Proto." + topicName)
 
     def startPublisher(self, topicName):
         ProtoPb = self.getProto(topicName)
@@ -35,9 +37,10 @@ class OutputInterface:
         self.publisher.c_publisher.destroy()
         return
 
+
 class ImageOutput(OutputInterface):
-    def __init__(self):
-        OutputInterface.__init__(self, "imagen")
+    def __init__(self, topicName):
+        OutputInterface.__init__(self, topicName)
         return
 
     def updateImageProperties(self, shape):
@@ -45,8 +48,7 @@ class ImageOutput(OutputInterface):
         self.message.height = shape[1]
         self.message.channels = shape[2]
 
-    def updateMessage(self, image, compression, color, facesDetected):
+    def updateMessage(self, image, compression):
         self.updateImageProperties(image.shape)
-
-
+        self.message.data = improc.encodeImage(image, compression)
 
