@@ -24,6 +24,7 @@ int main(int argc, char *argv[])
     eCAL::Process::SleepMS(1000);
 
     cv::Mat frame, frame_gray;
+    cv::uint8_t vectorizedImage[640 * 480 * 3];
 
     bool isReceived = false;
     for (;;)
@@ -36,8 +37,18 @@ int main(int argc, char *argv[])
                          protobuf_message.width(),
                          16);
             auto data = reinterpret_cast<unsigned char const*>(protobuf_message.data().data());
-            std::copy(data, (data + (frame.rows * frame.cols * 3)), frame.data);
+            std::copy(data, (data + (frame.rows * frame.cols * 3)), vectorizedImage);
 
+
+            int idx = 0;
+            for(int col=0; col<frame.cols; col++){
+                for(int row=0; row<frame.rows; row++){
+                    for(int channel=0; channel<frame.channels(); channel++) {
+                        frame.at<cv::Vec3b>(row, col)[channel] = vectorizedImage[idx++];
+                    }
+                }
+            }
+        frame = frame.t();
         cv::imshow("Received image", frame);
         }
 
