@@ -4,9 +4,9 @@ import ecal_interfaces as ecalio
 # Initialize eCAL input interface
 publisher = ecalio.ImageOutput("image")
 
-cam = cv.VideoCapture(1
+cam = cv.VideoCapture(1)
 
-while True
+while True:
     # OpenCV related
     ret_val, img = cam.read()
 
