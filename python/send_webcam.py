@@ -4,14 +4,14 @@ import ecal_interfaces as ecalio
 # Initialize eCAL input interface
 publisher = ecalio.ImageOutput("image")
 
-cam = cv.VideoCapture(1)
+cam = cv.VideoCapture(0)
 
 while True:
     # OpenCV related
     ret_val, img = cam.read()
 
     # update message and image processing functions
-    publisher.updateMessage(img, "JPG")
+    publisher.updateMessage(img, "UNCOMPRESSED")
 
     # send image
     publisher.send()

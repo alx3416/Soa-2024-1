@@ -15,6 +15,7 @@ message(STATUS "Protobuf DIR: = ${Protobuf_DIR}")
 
 set(TARGET_NAME_PUB ecal_send)
 set(TARGET_WEBCAM_PUB ecal_cam_send)
+set(TARGET_WEBCAM_SUB ecal_cam_receive)
 
 set(ecal_snd
         ${CMAKE_CURRENT_SOURCE_DIR}/cpp/send.cpp
@@ -25,6 +26,10 @@ set(ecal_cam_snd
         ${CMAKE_CURRENT_SOURCE_DIR}/cpp/ecal_interface.h
 )
 
+set(ecal_cam_rcv
+        ${CMAKE_CURRENT_SOURCE_DIR}/cpp/receive_webcam.cpp
+)
+
 set(protobuf_files
         ${CMAKE_CURRENT_SOURCE_DIR}/proto/image.proto
         ${CMAKE_CURRENT_SOURCE_DIR}/proto/mi_mensaje.proto
@@ -32,9 +37,11 @@ set(protobuf_files
 
 add_executable(${TARGET_NAME_PUB} ${ecal_snd})
 add_executable(${TARGET_WEBCAM_PUB} ${ecal_cam_snd})
+add_executable(${TARGET_WEBCAM_SUB} ${ecal_cam_rcv})
 
 PROTOBUF_TARGET_CPP(${TARGET_NAME_PUB} ${CMAKE_CURRENT_SOURCE_DIR}/proto/ ${protobuf_files})
 PROTOBUF_TARGET_CPP(${TARGET_WEBCAM_PUB} ${CMAKE_CURRENT_SOURCE_DIR}/proto/ ${protobuf_files})
+PROTOBUF_TARGET_CPP(${TARGET_WEBCAM_SUB} ${CMAKE_CURRENT_SOURCE_DIR}/proto/ ${protobuf_files})
 
 target_link_libraries(${TARGET_NAME_PUB}
         PRIVATE
@@ -49,3 +56,9 @@ target_link_libraries(${TARGET_WEBCAM_PUB}
         ${OpenCV_LIBS}
 )
 
+target_link_libraries(${TARGET_WEBCAM_SUB}
+        PRIVATE
+        eCAL::core
+        ${Protobuf_LIBRARIES}
+        ${OpenCV_LIBS}
+)

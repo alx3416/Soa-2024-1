@@ -119,6 +119,7 @@ namespace eCALIO{
             }
             message.set_height(image.cols);
             message.set_width(image.rows);
+            message.set_channels(image.channels());
             message.set_imagecompression(compression);
             message.set_color(color);
             message.set_data(&vectorizedImage, image.rows * image.cols * 3);
