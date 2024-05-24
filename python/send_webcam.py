@@ -7,6 +7,7 @@ publisher = ecalio.ImageOutput("image")
 # cascade detector
 faceDetector = cv.CascadeClassifier("haarcascade_frontalface_default.xml")
 # 0 default, 1 USB webcam
+
 cam = cv.VideoCapture(0)
 
 while True:
@@ -21,7 +22,7 @@ while True:
         cv.rectangle(img, (x, y), (x + w, y + h), (255, 0, 0), 2)
 
     # update message and image processing functions
-    publisher.updateMessage(img, "JPG")
+    publisher.updateMessage(img, "UNCOMPRESSED")
 
     # send image
     publisher.send()
