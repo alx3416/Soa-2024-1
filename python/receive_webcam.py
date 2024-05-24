@@ -3,7 +3,7 @@ import cv2 as cv
 import ecal.core.core as ecal_core
 import numpy as np
 from ecal.core.subscriber import ProtoSubscriber
-import proto.image_pb2 as imagen_pb2
+import python.image_pb2 as imagen_pb2
 
 ecal_core.initialize(sys.argv, "Python Protobuf Subscriber")
 sub = ProtoSubscriber("image", imagen_pb2.image)
