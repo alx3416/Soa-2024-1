@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package pb;
+
+message facelocation
+{
+  int32 xmin = 1;
+  int32 ymin = 2;
+  int32 xmax = 3;
+  int32 ymax = 4;
+}
+
+message detections
+{
+  int32 imagewidth                      = 1;
+  int32 imageheight                     = 2;
+  repeated facelocation facedetection   = 3;
+  string name                           = 4;
+}
