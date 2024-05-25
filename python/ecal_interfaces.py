@@ -77,59 +77,65 @@ class ImageOutput(OutputInterface):
             face = face + 1
             # print(self.message.facedetection[0].xmin)
 
+
 class InputInterface:
     def __init__(self, topicName):
         self.topicName = topicName
         self.processName = "Python_webcam_receive"
         self.start()
-        self.subscriber = self.startSubscriber(self.topicName)
+        self.messageWasReceived = False
+        self.subscriber = None
+        self.ret = int()
+        self.message = self.startSubscriber(self.topicName)()
 
     @staticmethod
     def getProto(topicName):
-        Proto = importlib.import_module("proto." + topicName + "_pb2")
+        Proto = importlib.import_module(topicName + "_pb2")
         return eval("Proto." + topicName)
 
     def startSubscriber(self, topicName):
         ProtoPb = self.getProto(topicName)
-        return ProtoSubscriber(topicName, ProtoPb)
+        self.subscriber = ProtoSubscriber(topicName, ProtoPb)
+        self.messageWasReceived = False
+        return ProtoPb
 
     def start(self):
         ecal_core.initialize(sys.argv, self.processName)
         ecal_core.set_process_state(1, 1, "")
 
+    def receive(self, waitTime):
+        self.ret, self.message, timeStamp = self.subscriber.receive(waitTime)
+        if self.ret != 0:
+            self.messageWasReceived = True
+
+    def waitForMessage(self, waitTime):
+        self.messageWasReceived = False
+        self.receive(waitTime)
+        return self.messageWasReceived
+
     def __del__(self):
         self.subscriber.c_subscriber.destroy()
         return
+
 
 class ImageInput(InputInterface):
     def __init__(self, topicName):
         InputInterface.__init__(self, topicName)
         return
 
-    def receive(self):
-        is_received, self.protobuf_message, time = self.subscriber.receive(1)
-        if is_received:
-            return True
-        return False
-
-    def receive_data(self):
-        if self.receive():
-            img = np.frombuffer(self.protobuf_message.data, dtype=np.uint8)
-            #img = np.reshape(img, (protobuf_message.height, protobuf_message.width, protobuf_message.channels))
-            img = cv2.imdecode(img, cv2.IMREAD_COLOR)
-            return img
-        return None
+    def getColorImage(self):
+        if self.messageWasReceived:
+            shape = [self.message.width, self.message.height, 3]
+            return improc.decodeImage(self.message.data, shape, self.message.imagecompression)
+        else:
+            raise TypeError
 
     def getImageProperties(self):
-        if self.receive():
-            return (
-                self.protobuf_message.width,
-                self.protobuf_message.height,
-                self.protobuf_message.channels
-            )
-        return None
+        return (
+            self.message.width,
+            self.message.height,
+            self.message.channels
+        )
 
     def getFaceDetection(self):
-        if self.receive():
-            return self.protobuf_message.facedetection, 
-        return None
+        return self.message.facedetection

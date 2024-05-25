@@ -16,10 +16,3 @@ while True:
 
     # send image
     publisher.send()
-
-    if ret_val:
-        cv.imshow('my webcam', img)
-        if cv.waitKey(1) == 27:
-            break  # esc to quit
-
-cv.destroyAllWindows()
