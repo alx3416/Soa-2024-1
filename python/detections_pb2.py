@@ -18,42 +18,42 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='pb',
   syntax='proto3',
   serialized_options=None,
-  serialized_pb=b'\n\x10\x64\x65tections.proto\x12\x02pb\"F\n\x0c\x66\x61\x63\x65location\x12\x0c\n\x04xmin\x18\x01 \x01(\x05\x12\x0c\n\x04ymin\x18\x02 \x01(\x05\x12\x0c\n\x04xmax\x18\x03 \x01(\x05\x12\x0c\n\x04ymax\x18\x04 \x01(\x05\"l\n\ndetections\x12\x12\n\nimagewidth\x18\x01 \x01(\x05\x12\x13\n\x0bimageheight\x18\x02 \x01(\x05\x12\'\n\rfacedetection\x18\x03 \x03(\x0b\x32\x10.pb.facelocation\x12\x0c\n\x04name\x18\x04 \x01(\tb\x06proto3'
+  serialized_pb=b'\n\x10\x64\x65tections.proto\x12\x02pb\"?\n\x06\x62\x62oxes\x12\x0c\n\x04left\x18\x01 \x01(\x05\x12\n\n\x02up\x18\x02 \x01(\x05\x12\r\n\x05right\x18\x03 \x01(\x05\x12\x0c\n\x04\x64own\x18\x04 \x01(\x05\"^\n\ndetections\x12\x12\n\nimagewidth\x18\x01 \x01(\x05\x12\x13\n\x0bimageheight\x18\x02 \x01(\x05\x12\x19\n\x05\x66\x61\x63\x65s\x18\x03 \x03(\x0b\x32\n.pb.bboxes\x12\x0c\n\x04name\x18\x04 \x01(\tb\x06proto3'
 )
 
 
 
 
-_FACELOCATION = _descriptor.Descriptor(
-  name='facelocation',
-  full_name='pb.facelocation',
+_BBOXES = _descriptor.Descriptor(
+  name='bboxes',
+  full_name='pb.bboxes',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='xmin', full_name='pb.facelocation.xmin', index=0,
+      name='left', full_name='pb.bboxes.left', index=0,
       number=1, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='ymin', full_name='pb.facelocation.ymin', index=1,
+      name='up', full_name='pb.bboxes.up', index=1,
       number=2, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='xmax', full_name='pb.facelocation.xmax', index=2,
+      name='right', full_name='pb.bboxes.right', index=2,
       number=3, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='ymax', full_name='pb.facelocation.ymax', index=3,
+      name='down', full_name='pb.bboxes.down', index=3,
       number=4, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -72,7 +72,7 @@ _FACELOCATION = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=24,
-  serialized_end=94,
+  serialized_end=87,
 )
 
 
@@ -98,7 +98,7 @@ _DETECTIONS = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='facedetection', full_name='pb.detections.facedetection', index=2,
+      name='faces', full_name='pb.detections.faces', index=2,
       number=3, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
@@ -123,21 +123,21 @@ _DETECTIONS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=96,
-  serialized_end=204,
+  serialized_start=89,
+  serialized_end=183,
 )
 
-_DETECTIONS.fields_by_name['facedetection'].message_type = _FACELOCATION
-DESCRIPTOR.message_types_by_name['facelocation'] = _FACELOCATION
+_DETECTIONS.fields_by_name['faces'].message_type = _BBOXES
+DESCRIPTOR.message_types_by_name['bboxes'] = _BBOXES
 DESCRIPTOR.message_types_by_name['detections'] = _DETECTIONS
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
-facelocation = _reflection.GeneratedProtocolMessageType('facelocation', (_message.Message,), {
-  'DESCRIPTOR' : _FACELOCATION,
+bboxes = _reflection.GeneratedProtocolMessageType('bboxes', (_message.Message,), {
+  'DESCRIPTOR' : _BBOXES,
   '__module__' : 'detections_pb2'
-  # @@protoc_insertion_point(class_scope:pb.facelocation)
+  # @@protoc_insertion_point(class_scope:pb.bboxes)
   })
-_sym_db.RegisterMessage(facelocation)
+_sym_db.RegisterMessage(bboxes)
 
 detections = _reflection.GeneratedProtocolMessageType('detections', (_message.Message,), {
   'DESCRIPTOR' : _DETECTIONS,

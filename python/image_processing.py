@@ -34,6 +34,7 @@ class FaceDetection:
     def detectFaces(self, colorFrame):
         img_gray = cv.cvtColor(colorFrame, cv.COLOR_BGR2GRAY)
         self.faces = self.detector.detectMultiScale(img_gray, 1.1, 4)
+        return self.faces
 
     def drawFaces(self, frame):
         for (x, y, w, h) in self.faces:

@@ -5,13 +5,16 @@ import ecal_interfaces as ecalio
 # publisher = ecalio.InputInterface('image')
 subscriber = ecalio.ImageInput('image')
 faceDetector = ecalio.improc.FaceDetection()
+publisher = ecalio.DetectionsOutput('detections')
 
 while True:
     # OpenCV related
     subscriber.receive(100)
     if subscriber.messageWasReceived:
         frame = subscriber.getColorImage()
-        faceDetector.detectFaces(frame)
+        faces = faceDetector.detectFaces(frame)
+        publisher.updateMessage(faces, frame)
+        publisher.send()
         faceDetector.drawFaces(frame)
 
         cv.imshow('my webcam', frame)

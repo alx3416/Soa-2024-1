@@ -78,6 +78,29 @@ class ImageOutput(OutputInterface):
             # print(self.message.facedetection[0].xmin)
 
 
+class DetectionsOutput(OutputInterface):
+    def __init__(self, topicName):
+        OutputInterface.__init__(self, topicName)
+        return
+
+    def updateMessage(self, faces, frame):
+        frameSize = frame.shape
+        self.message.imagewidth = frameSize[0]
+        self.message.imageheight = frameSize[1]
+        self.updateFacesDetected(faces)
+
+    def updateFacesDetected(self, facesDetected):
+        del self.message.faces[:]
+        face = 0
+        for (x, y, w, h) in facesDetected:
+            self.message.faces.add()
+            self.message.faces[face].left = x
+            self.message.faces[face].up = y
+            self.message.faces[face].right = x + w
+            self.message.faces[face].down = y + h
+            face = face + 1
+
+
 class InputInterface:
     def __init__(self, topicName):
         self.topicName = topicName
