@@ -53,6 +53,17 @@ class ImageOutput(OutputInterface):
     def updateMessage(self, image, compression):
         self.updateImageProperties(image.shape)
         self.message.data = improc.encodeImage(image, compression)
+        self.updateCompression(compression)
+
+    def updateCompression(self, compression):
+        if compression == "UNCOMPRESSED":
+            self.message.imagecompression = 1
+        elif compression == "JPG":
+            self.message.imagecompression = 2
+        elif compression == "LZ4":
+            self.message.imagecompression = 3
+        else:
+            self.message.imagecompression = 0
 
     def updateFaceDetected(self, faces):
         del self.message.facedetection[:]
