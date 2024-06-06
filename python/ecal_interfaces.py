@@ -162,3 +162,27 @@ class ImageInput(InputInterface):
 
     def getFaceDetection(self):
         return self.message.facedetection
+
+
+class DetectionsInput(InputInterface):
+    def __init__(self, topicName):
+        InputInterface.__init__(self, topicName)
+        self.faceDetector = improc.FaceDetection()
+        return
+
+    def getFaceDetection(self):
+        self.faceDetector.faces = self.message.faces
+        return self.message.faces
+
+    def drawFacesDetected(self, image):
+        self.faceDetector.faces = []
+        for facelocation_message in self.message.faces:
+            xmin = facelocation_message.left
+            ymin = facelocation_message.up
+            xmax = facelocation_message.right
+            ymax = facelocation_message.down
+            width = xmax - xmin + 1
+            height = ymax - ymin + 1
+            self.faceDetector.faces.append((xmin, ymin, width, height))
+        image = self.faceDetector.drawFaces(frame=image)
+        return image

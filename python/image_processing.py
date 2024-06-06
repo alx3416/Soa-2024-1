@@ -40,3 +40,4 @@ class FaceDetection:
         for (x, y, w, h) in self.faces:
             cv.rectangle(frame, (x, y), (x + w, y + h), (255, 0, 0), 2)
         self.faces = None
+        return frame
