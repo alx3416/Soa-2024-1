@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package pb;
+
+message bboxes
+{
+  int32 left  = 1;
+  int32 up    = 2;
+  int32 right = 3;
+  int32 down  = 4;
+}
+
+message detections
+{
+  int32 imagewidth         = 1;
+  int32 imageheight        = 2;
+  repeated bboxes faces    = 3;
+  string name              = 4;
+}
