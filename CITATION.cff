@@ -1,0 +1,37 @@
+# This CITATION.cff file was generated with cffinit.
+# Visit https://bit.ly/cffinit to generate yours today!
+
+cff-version: 1.2.0
+title: YOLO Object detection employing ARM and eCAL
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+type: software
+authors:
+  - given-names: Victor Alejandro
+    family-names: Gonzalez-Huitron
+    email: victor.gh@queretaro.tecnm.mx
+    affiliation: Instituto Tecnológico de Querétaro
+    orcid: 'https://orcid.org/0000-0003-0426-0515'
+  - given-names: Nancy Judith
+    family-names: Beltrán Valenzuela
+    email: nancy.bv@queretaro.tecnm.mx
+    affiliation: Instituto Tecnológico de Querétaro
+  - given-names: Jesus Rodrigo
+    family-names: De Mateo Gonzalez
+    email: m23140009@queretaro.tecnm.mx
+    affiliation: Instituto Tecnológico de Querétaro
+  - email: ivonne.al@queretaro.tecnm.mx
+    given-names: Ivonne Tatiana
+    family-names: Alcantara Llanas
+    affiliation: Instituto Tecnológico de Querétaro
+repository-code: 'https://github.com/alx3416/Soa-2024-1'
+abstract: >-
+  Conjunto de demostraciones para el envío y recepción de
+  mensajes mediante eCAL, Google Protocol Buffers y
+  RabbitMQ, ejemplos con python y C++
+
+
+  Proyecto principal consiste en Implementación YOLO para
+  ARM y x86 empleando eCAL para diseño modular de sistema de
+  adquisición y procesamiento de imágenes
