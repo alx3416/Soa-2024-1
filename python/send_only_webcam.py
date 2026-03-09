@@ -5,7 +5,7 @@ import ecal_interfaces as ecalio
 publisher = ecalio.ImageOutput("image")
 
 # 0 default, 1 USB webcam
-cam = cv.VideoCapture(0)
+cam = cv.VideoCapture(0, cv.CAP_DSHOW)
 
 while True:
     # OpenCV related

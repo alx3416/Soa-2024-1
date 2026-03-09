@@ -7,11 +7,11 @@ from ecal.core.subscriber import ProtoSubscriber
 import python.image_pb2 as imagen_pb2
 
 ecal_core.initialize(sys.argv, "Python Protobuf Subscriber")
-sub = ProtoSubscriber("image", imagen_pb2.imagen)
+sub = ProtoSubscriber("image", imagen_pb2.image)
 protobuf_message = imagen_pb2
 
 # Load the model
-yolo = YOLO('yolov8s-seg.pt')
+yolo = YOLO('yolov8n-seg.pt')
 
 # Load the video capture
 videoCap = cv.VideoCapture(0)

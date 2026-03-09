@@ -3,7 +3,7 @@ from ultralytics import YOLO
 import ecal_interfaces as ecalio
 
 # Load the model
-yolo = YOLO('yolov8s-seg.pt')
+yolo = YOLO('yolov8n-seg.pt')
 
 subscriber = ecalio.ImageInput('image')
 detectionSubscriber = ecalio.DetectionsInput('detections')

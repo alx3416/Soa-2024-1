@@ -2,10 +2,10 @@ import cv2
 from ultralytics import YOLO
 
 # Load the model
-yolo = YOLO('yolov8s.pt')
+yolo = YOLO('yolov8n.pt')
 
 # Load the video capture
-videoCap = cv2.VideoCapture(0)
+videoCap = cv2.VideoCapture(1)
 
 
 # Function to get class colors

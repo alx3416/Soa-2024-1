@@ -117,8 +117,8 @@ namespace eCALIO{
                     vectorizedImage[idx++] = image.at<cv::Vec3b>(row,col)[2];
                 }
             }
-            message.set_height(image.cols);
-            message.set_width(image.rows);
+            message.set_height(image.rows);
+            message.set_width(image.cols);
             message.set_channels(image.channels());
             message.set_imagecompression(compression);
             message.set_color(color);
